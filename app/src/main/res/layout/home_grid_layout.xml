@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <ImageView
                 android:id="@+id/gridIconIv"
                 android:layout_width="150dp"
@@ -23,6 +24,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 tools:srcCompat="@tools:sample/avatars" />
+
 
             <TextView
                 android:id="@+id/titleTv"

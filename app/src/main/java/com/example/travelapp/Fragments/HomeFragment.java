@@ -69,7 +69,9 @@ public class HomeFragment extends Fragment {
     List<String> titles;
     List<Integer> images;
 
+
     AdapterHomeGrid adapterHomeGrid;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,6 +102,7 @@ public class HomeFragment extends Fragment {
         titles.add("Raigadh Fort");
 
     }
+
 
     private void addImage() {
         images = new ArrayList<>();
