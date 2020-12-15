@@ -2,6 +2,7 @@ package com.example.travelapp.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +14,14 @@ import android.widget.Adapter;
 import android.widget.GridLayout;
 
 import com.example.travelapp.AdapterHomeGrid;
+import com.example.travelapp.ModelHome;
 import com.example.travelapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +77,9 @@ public class HomeFragment extends Fragment {
     List<String> titles;
     List<Integer> images;
 
+    private FirebaseAuth firebaseAuth;
 
+    private ArrayList<ModelHome> homeList;
     AdapterHomeGrid adapterHomeGrid;
 
 
@@ -79,43 +89,70 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         datalist = view.findViewById(R.id.datalist);
 
-        addTitle();
-        addImage();
+        homeList = new ArrayList<>();
 
-        adapterHomeGrid = new AdapterHomeGrid(titles, images, getActivity());
-        datalist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        datalist.setAdapter(adapterHomeGrid);
+        FirebaseDatabase.getInstance().getReference("Home")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        homeList.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()){
+                            ModelHome modelHome = ds.getValue(ModelHome.class);
+                            homeList.add(modelHome);
+                        }
+
+                        adapterHomeGrid = new AdapterHomeGrid(getActivity(), homeList);
+
+                        datalist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        datalist.setAdapter(adapterHomeGrid);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
+
+//        adapterHomeGrid = new AdapterHomeGrid(titles, images, getActivity());
+//        datalist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+//        datalist.setAdapter(adapterHomeGrid);
 
         return view;
     }
 
-    private void addTitle() {
-        titles = new ArrayList<>();
 
-        titles.add("Dwarka");
-        titles.add("Indraprasth");
-        titles.add("Nalanda University");
-        titles.add("Taxila University");
-        titles.add("Shivneri Fort");
-        titles.add("Raigadh Fort");
-
-    }
-
-
-    private void addImage() {
-        images = new ArrayList<>();
-
-        images.add(R.drawable.dwarka);
-        images.add(R.drawable.indraprasth);
-        images.add(R.drawable.nalanda_university);
-        images.add(R.drawable.taxila);
-        images.add(R.drawable.shivneri_fort);
-        images.add(R.drawable.raigadh_fort);
-
-
-    }
+//
+//    private void addTitle() {
+//        titles = new ArrayList<>();
+//
+//        titles.add("Dwarka");
+//        titles.add("Indraprasth");
+//        titles.add("Nalanda University");
+//        titles.add("Taxila University");
+//        titles.add("Shivneri Fort");
+//        titles.add("Raigadh Fort");
+//
+//    }
+//
+//    private void addImage() {
+//        images = new ArrayList<>();
+//
+//        images.add(R.drawable.dwarka);
+//        images.add(R.drawable.indraprasth);
+//        images.add(R.drawable.nalanda_university);
+//        images.add(R.drawable.taxila);
+//        images.add(R.drawable.shivneri_fort);
+//        images.add(R.drawable.raigadh_fort);
+//
+//
+//    }
 
 
 }
