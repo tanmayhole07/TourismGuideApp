@@ -53,8 +53,13 @@ public class AdapterHomeGrid extends RecyclerView.Adapter<AdapterHomeGrid.MyHold
         String title = modelHome.getTitle();
         String uid = modelHome.getUid();
         String gridIcon = modelHome.getGridIcon();
+        String latitude = modelHome.getLatitude();
+        String longitude = modelHome.getLongitude();
+        String description = modelHome.getDescription();
+        String timings = modelHome.getTimings();
 
         holder.titleTv.setText(title);
+
 
         try {
             Picasso.get().load(gridIcon).placeholder(R.drawable.loading).into(holder.gridIconIv);
@@ -66,7 +71,7 @@ public class AdapterHomeGrid extends RecyclerView.Adapter<AdapterHomeGrid.MyHold
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra("shopUid", uid);
+                intent.putExtra("postUid", uid);
                 context.startActivity(intent);
             }
         });

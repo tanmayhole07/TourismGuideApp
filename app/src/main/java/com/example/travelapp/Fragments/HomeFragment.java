@@ -74,8 +74,6 @@ public class HomeFragment extends Fragment {
     }
 
     RecyclerView datalist;
-    List<String> titles;
-    List<Integer> images;
 
     private FirebaseAuth firebaseAuth;
 
@@ -106,7 +104,6 @@ public class HomeFragment extends Fragment {
                         }
 
                         adapterHomeGrid = new AdapterHomeGrid(getActivity(), homeList);
-
                         datalist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                         datalist.setAdapter(adapterHomeGrid);
                     }
