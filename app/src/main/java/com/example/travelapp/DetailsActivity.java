@@ -3,7 +3,11 @@ package com.example.travelapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +27,8 @@ public class DetailsActivity extends AppCompatActivity {
 
     private ImageView postImageIv;
     private TextView titleTv, descriptionTv, timingsTv;
+    private String latitude, longitude;
+    private ImageButton mapBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +42,15 @@ public class DetailsActivity extends AppCompatActivity {
         titleTv = findViewById(R.id.titleTv);
         descriptionTv = findViewById(R.id.descriptionTv);
         timingsTv = findViewById(R.id.timingsTv);
+        mapBtn = findViewById(R.id.mapBtn);
 
+
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OpenMap();
+            }
+        });
 
         loadPostInfo();
     }
@@ -50,8 +64,8 @@ public class DetailsActivity extends AppCompatActivity {
                 String title = ""+snapshot.child("Title").getValue();
                 String gridIcon = ""+snapshot.child("gridIcon").getValue();
                 String description = ""+snapshot.child("description").getValue();
-                String latitude = ""+snapshot.child("latitude").getValue();
-                String longitude = ""+snapshot.child("longitude").getValue();
+                latitude = ""+snapshot.child("latitude").getValue();
+                longitude = ""+snapshot.child("longitude").getValue();
                 String timings = ""+snapshot.child("timings").getValue();
 
                 titleTv.setText(title);
@@ -72,6 +86,12 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void OpenMap() {
+        String address = "https://maps.google.com/maps?saar=" + latitude + "," + longitude + "&daddr=" + latitude + "," + longitude;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(address));
+        startActivity(intent);
     }
 
     @Override
